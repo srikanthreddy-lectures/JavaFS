@@ -1,32 +1,35 @@
 package com.app;
 
-class Tree{
-    private class Node{
-        private int data;
-        private Node leftChild;
-        private Node rightChild;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
-        Node(int data){
+class MyTree{
+    private class TreeNode{
+        private int data;
+        private TreeNode leftChild;
+        private TreeNode rightChild;
+
+        TreeNode(int data){
             this.data=data;
         }
     }
 
-    Node root;
-    //insert
+    TreeNode root = null;
+
     public void insert(int data){
-        Node node = new Node(data);
-        if(root == null){
+        TreeNode node = new TreeNode(data);
+        if(root == null)
             root = node;
-        }
-        else {
-            Node current = root;
-            while (true){
+        else{
+            TreeNode current = root;
+            while(true){
                 if(data < current.data){
                     if(current.leftChild==null){
                         current.leftChild=node;
                         break;
                     }
-                   current = current.leftChild;
+                    current = current.leftChild;
                 }
                 else {
                     if(current.rightChild==null){
@@ -39,27 +42,93 @@ class Tree{
         }
     }
 
+    public void bft(){
+        if(root == null) return;
 
-    public void print(){
-        print("",root,false);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            System.out.print(node.data+" ");
+            if(node.leftChild !=null)
+                queue.offer(node.leftChild);
+            if(node.rightChild !=null)
+                queue.offer(node.rightChild);
+        }
     }
 
-    private void print(String prefix, Node node, boolean isLeft){
-        if(node!=null){
-            System.out.println(prefix + (isLeft?"(L) ":"(R) ")+node.data);
-            print(prefix ,node.leftChild,true);
-            print(prefix ,node.rightChild,false);
+    public void dft(){
+        if(root == null) return;
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            System.out.print(node.data+" ");
+            if(node.rightChild !=null)
+                stack.push(node.rightChild);
+            if(node.leftChild !=null)
+                stack.push(node.leftChild);
         }
+    }
+
+    public void inOrder(){
+        if (root==null) return;
+        inOrder(root);
+
+    }
+
+    private void inOrder(TreeNode node){
+        if(node == null)return;
+        inOrder(node.leftChild);
+        System.out.print(node.data+" ");
+        inOrder(node.rightChild);
+    }
+
+    public void preOrder(){
+        if (root==null) return;
+        preOrder(root);
+
+    }
+
+    private void preOrder(TreeNode node){
+        if(node == null)return;
+        System.out.print(node.data+" ");
+        preOrder(node.leftChild);
+        preOrder(node.rightChild);
+    }
+
+    public void postOrder(){
+        if (root==null) return;
+        postOrder(root);
+
+    }
+
+    private void postOrder(TreeNode node){
+        if(node == null)return;
+        postOrder(node.leftChild);
+        postOrder(node.rightChild);
+        System.out.print(node.data+" ");
     }
 }
 
-public class MyTree{
-    public static void main(String[] args) throws Exception {
-       Tree tree = new Tree();
-       tree.insert(12);
-       tree.insert(15);
-       tree.insert(10);
-       tree.print();
+public class Main {
+    public static void main(String[] args) {
+        MyTree tree = new MyTree();
+        tree.insert(25);
+        tree.insert(20);
+        tree.insert(15);
+        tree.insert(36);
+        tree.insert(22);
+        tree.bft();
+        System.out.println("");
+        tree.dft();
+        System.out.println("");
+        tree.preOrder();
+        System.out.println("");
+        tree.inOrder();
+        System.out.println("");
+        tree.postOrder();
 
     }
 }
