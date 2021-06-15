@@ -1,0 +1,27 @@
+package challengs1;
+
+public class ArthmaticSlicing_Recurrsion {
+    public static void main(String[] args) {
+        int arr[]={1,2,3,4};
+        System.out.println(numberOfSlices(arr));
+    }
+
+   public static int numberOfSlices(int[] arr){
+        //logic
+        int length = arr.length-1;
+        int result = slice(arr,length);
+        return result;
+    }
+
+    private static int slice(int[] arr,int length){
+        int sliceCount=0;
+        if(length<2) return 0;
+        if(arr[length] - arr[length-1] == arr[length-1] - arr[length-2]){
+            sliceCount = 1 + slice(arr,length-1);
+        }
+        else {
+            slice(arr,length-1);
+        }
+        return sliceCount;
+    }
+}
